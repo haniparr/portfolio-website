@@ -8,7 +8,7 @@ export const Section = ({ children, className = "", bg = "white" }) => {
     <section
       className={`${backgrounds[bg]} ${className} transition-colors duration-300`}
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12">{children}</div>
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12">{children}</div>
     </section>
   );
 };

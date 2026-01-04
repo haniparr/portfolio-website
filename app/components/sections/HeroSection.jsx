@@ -7,7 +7,7 @@ import { Heading, Text } from "@/app/components/ui/Typography";
 
 export const HeroSection = ({ darkMode, setDarkMode }) => {
   return (
-    <Section className="h-screen pt-32 md:pt-64">
+    <Section className="h-screen flex items-center pt-0">
       <div className="max-w-4xl flex flex-col justify-center h-full">
         <h1 className="text-6xl md:text-[140px] font-semibold tracking-tight leading-none text-text-heading dark:text-dark-heading">
           hello
