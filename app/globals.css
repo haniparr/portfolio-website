@@ -1,6 +1,33 @@
 @import "tailwindcss";
 
-/* JANGAN pakai @theme - ini yang bikin ngikutin device! */
+/* CRITICAL: Configure dark mode variant */
+@variant dark (&:is(.dark, .dark *));
+
+/* Color palette untuk light mode (default) */
+@theme {
+  --color-primary: #957bac;
+  --color-primary-hover: #765c8c;
+  --color-primary-tint: #f4f0f7;
+  --color-bg-main: #ffffff;
+  --color-bg-section: #f8f9fa;
+  --color-bg-card: #ffffff;
+  --color-border-light: #e9ecef;
+  --color-text-heading: #212529;
+  --color-text-body: #495057;
+  --color-text-muted: #868e96;
+
+  /* Dark mode colors */
+  --color-dark-primary: #bfafd0;
+  --color-dark-hover: #957bac;
+  --color-dark-tint: #2d2633;
+  --color-dark-bg: #121212;
+  --color-dark-section: #18181b;
+  --color-dark-card: #1e1e22;
+  --color-dark-border: #2f3336;
+  --color-dark-heading: #ededed;
+  --color-dark-body: #b0b3b8;
+  --color-dark-muted: #6c757d;
+}
 
 html {
   scroll-behavior: smooth;
