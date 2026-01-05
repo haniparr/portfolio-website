@@ -25,7 +25,7 @@ export const WordPressSection = ({ portfolioItems }) => {
   );
 
   return (
-    <Section bg="gray" className="py-20">
+    <Section bg="gray" className="py-20 relative z-40">
       <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
         <Heading level={2}>wordpress</Heading>
         <Text className="max-w-xs">
@@ -37,11 +37,10 @@ export const WordPressSection = ({ portfolioItems }) => {
       {/* Tabs */}
       <div className="flex justify-center gap-4 mb-12">
         <button
-          className={`px-6 py-2 rounded-full transition-colors ${
-            activeTab === "desktop"
+          className={`px-6 py-2 rounded-full transition-colors ${activeTab === "desktop"
               ? "bg-primary text-white"
               : "bg-white text-text-body"
-          }`}
+            }`}
           onClick={() => {
             setActiveTab("desktop");
             setCurrentPage(1);
@@ -50,11 +49,10 @@ export const WordPressSection = ({ portfolioItems }) => {
           Desktop
         </button>
         <button
-          className={`px-6 py-2 rounded-full transition-colors ${
-            activeTab === "mobile"
+          className={`px-6 py-2 rounded-full transition-colors ${activeTab === "mobile"
               ? "bg-primary text-white"
               : "bg-white text-text-body"
-          }`}
+            }`}
           onClick={() => {
             setActiveTab("mobile");
             setCurrentPage(1);
@@ -95,11 +93,10 @@ export const WordPressSection = ({ portfolioItems }) => {
             <button
               key={num}
               onClick={() => setCurrentPage(num)}
-              className={`w-8 h-8 rounded-full transition-colors ${
-                num === currentPage
+              className={`w-8 h-8 rounded-full transition-colors ${num === currentPage
                   ? "bg-primary text-white"
                   : "bg-white text-text-body hover:bg-primary hover:text-white"
-              }`}
+                }`}
             >
               {num}
             </button>

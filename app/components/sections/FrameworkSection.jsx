@@ -11,7 +11,7 @@ export const FrameworkSection = () => {
   ];
 
   return (
-    <Section className="py-32 overflow-hidden bg-bg-section dark:bg-dark-section">
+    <Section className="py-32 overflow-hidden bg-bg-section dark:bg-dark-section relative z-30">
       <div className="grid md:grid-cols-2 gap-20 items-center">
         <div className="order-2 md:order-1 relative">
           {/* Mobile Mockup */}

@@ -7,10 +7,10 @@ import { HeroSection } from "@/app/components/sections/HeroSection";
 import { WebDevSection } from "@/app/components/sections/WebDevSection";
 import { FrameworkSection } from "@/app/components/sections/FrameworkSection";
 import { WordPressSection } from "@/app/components/sections/WordPressSection";
-import { portfolioData } from "@/lib/portofolio-data";
+import { portfolioData } from "@/lib/portfolio-data";
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   // Load dari localStorage
@@ -19,6 +19,9 @@ export default function Home() {
     const saved = localStorage.getItem("darkMode");
     if (saved !== null) {
       setDarkMode(saved === "true");
+    } else {
+      // Default to dark mode if no preference saved
+      setDarkMode(true);
     }
   }, []);
 
