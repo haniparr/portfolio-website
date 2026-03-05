@@ -5,8 +5,6 @@ import { Navbar } from "@/app/components/layout/Navbar";
 import { Footer } from "@/app/components/layout/Footer";
 import { HeroSection } from "@/app/components/sections/HeroSection";
 import { WebDevSection } from "@/app/components/sections/WebDevSection";
-import { FrameworkSection } from "@/app/components/sections/FrameworkSection";
-import { WordPressSection } from "@/app/components/sections/WordPressSection";
 import { portfolioData } from "@/lib/portfolio-data";
 
 export default function Home() {
@@ -46,9 +44,7 @@ export default function Home() {
     <main className="font-sans">
       <Navbar />
       <HeroSection darkMode={darkMode} setDarkMode={setDarkMode} />
-      <WebDevSection />
-      <FrameworkSection />
-      <WordPressSection portfolioItems={portfolioData} />
+      <WebDevSection portfolioItems={portfolioData} />
       <Footer />
     </main>
   );
