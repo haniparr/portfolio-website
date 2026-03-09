@@ -7,11 +7,11 @@ import { Menu, X } from "lucide-react";
 const menuItems = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Portfolio", href: "#portfolio" },
+  { label: "Work", href: "/work" },
+  { label: "Services", href: "#services" },
   { label: "Contact", href: "#contact" },
 ];
 
-// Container animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -30,7 +30,6 @@ const containerVariants = {
   },
 };
 
-// Individual menu item animation variants
 const itemVariants = {
   hidden: {
     opacity: 0,
@@ -57,14 +56,12 @@ const itemVariants = {
   },
 };
 
-// Overlay animation
 const overlayVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
   exit: { opacity: 0 },
 };
 
-// Panel animation
 const panelVariants = {
   hidden: { x: "100%" },
   visible: {
@@ -92,14 +89,14 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center relative">
         {/* Logo */}
         <motion.div
-          className="w-10 h-10 bg-primary dark:bg-dark-primary rounded-lg pointer-events-auto"
+          className="w-10 h-10 bg-primary rounded-lg pointer-events-auto"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         />
 
         {/* Toggle Button */}
         <motion.button
-          className="pointer-events-auto w-12 h-12 flex items-center justify-center rounded-full bg-black/5 dark:bg-white/10 backdrop-blur-sm text-text-heading dark:text-dark-heading z-[60]"
+          className="pointer-events-auto w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-cream z-[60]"
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -136,7 +133,7 @@ export const Navbar = () => {
           <div className="fixed inset-0 z-50">
             {/* Backdrop */}
             <motion.div
-              className="absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm pointer-events-auto"
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
               variants={overlayVariants}
               initial="hidden"
               animate="visible"
@@ -146,13 +143,12 @@ export const Navbar = () => {
 
             {/* Drawer Panel */}
             <motion.div
-              className="absolute top-0 right-0 h-full w-full max-w-sm bg-white/90 dark:bg-black/90 backdrop-blur-2xl shadow-2xl flex flex-col justify-center items-start pl-12 pointer-events-auto"
+              className="absolute top-0 right-0 h-full w-full max-w-sm bg-[#181616]/95 backdrop-blur-2xl shadow-2xl flex flex-col justify-center items-start pl-12 pointer-events-auto"
               variants={panelVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
-              {/* Menu Items with Stagger Effect */}
               <motion.div
                 className="flex flex-col gap-6"
                 variants={containerVariants}
@@ -165,17 +161,17 @@ export const Navbar = () => {
                     key={item.label}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-5xl md:text-6xl font-bold text-text-heading dark:text-dark-heading hover:text-primary dark:hover:text-dark-primary transition-colors origin-left"
+                    className="text-5xl md:text-6xl font-bold text-cream hover:text-primary-hover transition-colors origin-left"
                     variants={itemVariants}
                     whileHover={{
                       x: 20,
                       scale: 1.05,
-                      transition: { duration: 0.2 }
+                      transition: { duration: 0.2 },
                     }}
                     whileTap={{ scale: 0.95 }}
                     style={{ perspective: "1000px" }}
                   >
-                    <span className="text-primary dark:text-dark-primary text-lg font-normal mr-4 opacity-50">
+                    <span className="text-primary text-lg font-normal mr-4 opacity-50">
                       0{index + 1}
                     </span>
                     {item.label}
@@ -183,15 +179,14 @@ export const Navbar = () => {
                 ))}
               </motion.div>
 
-              {/* Bottom decoration */}
               <motion.div
-                className="absolute bottom-12 left-12 text-sm text-text-muted dark:text-dark-muted"
+                className="absolute bottom-12 left-12 text-sm text-cream/40"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: 0.5 }}
               >
-                <p>© 2024 Vidi Catering</p>
+                <p>&copy; 2024 Vidi Catering</p>
               </motion.div>
             </motion.div>
           </div>

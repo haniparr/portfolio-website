@@ -1,16 +1,27 @@
-import { Section } from "@/app/components/ui/Section";
-import { Text } from "@/app/components/ui/Typography";
-
 export const Footer = () => {
   return (
-    <footer className="bg-text-heading dark:bg-dark-bg border-t border-border-light dark:border-dark-border transition-colors duration-300 py-12">
-      <Section>
-        <div className="text-center">
-          <Text className="text-text-muted dark:text-dark-muted">
-            © 2024 Your Name. All rights reserved.
-          </Text>
+    <footer className="bg-bg-dark border-t border-cream-border py-12">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-cream/30 text-sm">
+            &copy; 2024 Vidi. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <a href="https://github.com" className="text-cream/30 hover:text-cream transition-colors text-sm">
+              GitHub
+            </a>
+            <a href="https://linkedin.com" className="text-cream/30 hover:text-cream transition-colors text-sm">
+              LinkedIn
+            </a>
+            <a href="https://dribbble.com" className="text-cream/30 hover:text-cream transition-colors text-sm">
+              Dribbble
+            </a>
+            <a href="https://instagram.com" className="text-cream/30 hover:text-cream transition-colors text-sm">
+              Instagram
+            </a>
+          </div>
         </div>
-      </Section>
+      </div>
     </footer>
   );
 };

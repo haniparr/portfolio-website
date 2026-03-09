@@ -5,31 +5,37 @@ export const Button = ({
   className = "",
   onClick,
   icon: Icon,
+  href,
 }) => {
   const baseStyles =
-    "font-medium rounded-full transition-all duration-300 flex items-center gap-2 justify-center";
+    "font-medium rounded-full flex items-center gap-2 justify-center cursor-pointer";
 
   const variants = {
     primary:
-      "bg-primary hover:bg-primary-hover dark:bg-dark-primary dark:hover:bg-dark-hover text-white",
+      "bg-primary hover:bg-primary-hover text-bg-dark",
     secondary:
-      "bg-white dark:bg-dark-card hover:bg-gray-50 dark:hover:bg-dark-border text-text-heading dark:text-dark-heading border border-border-light dark:border-dark-border",
-    icon: "bg-white dark:bg-dark-card hover:bg-primary-tint dark:hover:bg-dark-tint text-primary dark:text-dark-primary w-10 h-10 rounded-full",
+      "border border-cream-border text-cream hover:bg-cream-card hover:border-cream-muted/30",
+    ghost:
+      "text-cream hover:text-primary-hover",
   };
 
   const sizes = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-6 py-3 text-base",
-    lg: "px-8 py-4 text-lg",
+    sm: "px-5 py-2.5 text-sm",
+    md: "px-7 py-3.5 text-base",
+    lg: "px-9 py-4 text-lg",
   };
 
+  const Tag = href ? "a" : "button";
+  const linkProps = href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
+
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
+    <Tag
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className} transition-all duration-300`}
       onClick={onClick}
+      {...linkProps}
     >
       {children}
       {Icon && <Icon size={20} />}
-    </button>
+    </Tag>
   );
 };

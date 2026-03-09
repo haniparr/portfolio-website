@@ -1,9 +1,9 @@
 export const Card = ({ children, className = "", hover = true, ...props }) => {
   return (
     <div
-      className={`bg-bg-card dark:bg-dark-card rounded-2xl overflow-hidden shadow-sm ${
+      className={`bg-bg-dark-card rounded-lg overflow-hidden border border-cream-border ${
         hover
-          ? "hover:shadow-xl transition-all duration-300"
+          ? "hover:border-cream-muted/20 hover:bg-cream-card transition-all duration-300"
           : "transition-colors duration-300"
       } ${className}`}
       {...props}

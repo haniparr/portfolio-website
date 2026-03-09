@@ -26,10 +26,14 @@ export const SmoothScrollProvider = ({ children }) => {
 
         requestAnimationFrame(raf);
 
+        // Expose Lenis instance globally for programmatic scrolling
+        window.lenis = lenisRef.current;
+
         // Cleanup on unmount
         return () => {
             lenisRef.current?.destroy();
             lenisRef.current = null;
+            window.lenis = null;
         };
     }, []);
 

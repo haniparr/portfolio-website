@@ -1,40 +1,24 @@
 @import "tailwindcss";
 
-/* CRITICAL: Configure dark mode variant */
-@variant dark (&:is(.dark, .dark *));
-
-/* Color palette untuk light mode (default) */
+/* Griflan-inspired dark-only color palette */
 @theme {
   --color-primary: #957bac;
-  --color-primary-hover: #765c8c;
-  --color-primary-tint: #f4f0f7;
-  --color-bg-main: #ffffff;
-  --color-bg-section: #f8f9fa;
-  --color-bg-card: #ffffff;
-  --color-border-light: #e9ecef;
-  --color-text-heading: #212529;
-  --color-text-body: #495057;
-  --color-text-muted: #868e96;
-
-  /* Dark mode colors */
-  --color-dark-primary: #bfafd0;
-  --color-dark-hover: #957bac;
-  --color-dark-tint: #2d2633;
-  --color-dark-bg: #121212;
-  --color-dark-section: #18181b;
-  --color-dark-card: #1e1e22;
-  --color-dark-border: #2f3336;
-  --color-dark-heading: #ededed;
-  --color-dark-body: #b0b3b8;
-  --color-dark-muted: #6c757d;
-  --color-dark-muted: #6c757d;
+  --color-primary-hover: #BFAFD0;
+  --color-primary-dark: #765C8C;
+  --color-cream: #FFFDD8;
+  --color-cream-muted: rgba(255, 253, 219, 0.5);
+  --color-cream-subtle: rgba(255, 253, 219, 0.08);
+  --color-cream-border: rgba(255, 253, 219, 0.1);
+  --color-cream-card: rgba(255, 253, 219, 0.05);
+  --color-bg-dark: #181616;
+  --color-bg-dark-alt: #1c1a1a;
+  --color-bg-dark-card: #201e1e;
 }
 
 @keyframes marquee {
   0% {
     transform: translateX(0);
   }
-
   100% {
     transform: translateX(-50%);
   }
@@ -49,53 +33,53 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #181616;
+  color: #FFFDD8;
 }
 
 body {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  background-color: #181616;
+  color: #FFFDD8;
 }
 
-/* Smooth transitions */
-* {
-  transition-property: background-color, border-color, color;
-  transition-duration: 300ms;
-  transition-timing-function: ease-in-out;
+/* Heading font */
+.font-display {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
 }
 
-/* Custom scrollbar - Light Mode */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8f9fa;
+  background: #181616;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #957bac;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #765c8c;
-}
-
-/* Custom scrollbar - Dark Mode */
-.dark ::-webkit-scrollbar-track {
-  background: #18181b;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #bfafd0;
+  background: #BFAFD0;
 }
 
 /* Selection */
 ::selection {
   background: #957bac;
-  color: white;
+  color: #181616;
 }
 
-.dark ::selection {
-  background: #bfafd0;
-  color: #121212;
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
