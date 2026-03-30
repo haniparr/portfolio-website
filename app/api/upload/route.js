@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { requireAuth } from "@/lib/require-auth";
 
-export const maxDuration = 60;
 export const dynamic = "force-dynamic";
+
+export const maxDuration = 60;
 
 export async function POST(request) {
   const session = await requireAuth();
