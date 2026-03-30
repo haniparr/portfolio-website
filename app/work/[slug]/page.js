@@ -1,15 +1,10 @@
 import { notFound } from "next/navigation";
-import { getProjectBySlug, getCaseStudy, getAllProjectSlugs } from "@/lib/data";
+import { getProjectBySlug, getCaseStudy } from "@/lib/data";
 import { WorkDetailClient } from "./WorkDetailClient";
 import { Navbar } from "@/app/components/layout/Navbar";
 import { Footer } from "@/app/components/layout/Footer";
 
 export const dynamic = "force-dynamic";
-
-export async function generateStaticParams() {
-  const slugs = await getAllProjectSlugs();
-  return slugs;
-}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
