@@ -44,9 +44,9 @@ export const AboutSection = () => {
             transition={{ duration: 0.7, delay: 0.6 }}
           >
             <p className="text-cream-muted text-base md:text-lg leading-relaxed mb-6">
-              Saya menggabungkan keahlian di web development, UI/UX design, dan graphic
-              design untuk menciptakan digital experiences yang holistik. Dari konsep
-              visual hingga implementasi teknis, semuanya saya tangani.
+              I bring together web development, UI/UX design, and graphic design
+              to create holistic digital experiences. From visual concept to
+              technical implementation — I handle the full creative journey.
             </p>
             <a
               href="#portfolio"
@@ -58,7 +58,7 @@ export const AboutSection = () => {
                 else if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
             >
-              <span>Lihat Portfolio</span>
+              <span>See My Work</span>
               <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
             </a>
           </motion.div>

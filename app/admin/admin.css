@@ -1,0 +1,11 @@
+/* Minimal admin CSS — only for things Tailwind can't handle */
+
+/* Colored accent bars on stat cards (::before pseudo-element) */
+.stat-accent-blue::before { content:""; display:block; width:40px; height:4px; border-radius:2px; margin-bottom:16px; background:#3b82f6; }
+.stat-accent-green::before { content:""; display:block; width:40px; height:4px; border-radius:2px; margin-bottom:16px; background:#10b981; }
+.stat-accent-purple::before { content:""; display:block; width:40px; height:4px; border-radius:2px; margin-bottom:16px; background:#8b5cf6; }
+.stat-accent-yellow::before { content:""; display:block; width:40px; height:4px; border-radius:2px; margin-bottom:16px; background:#f59e0b; }
+.stat-accent-orange::before { content:""; display:block; width:40px; height:4px; border-radius:2px; margin-bottom:16px; background:#f97316; }
+
+/* Checkbox accent */
+input[type="checkbox"] { accent-color: #3b82f6; }

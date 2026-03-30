@@ -1,50 +1,54 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Heading, Text } from "@/app/components/ui/Typography";
+import Image from "next/image";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
-export const WorkDetailClient = ({ item }) => {
+// Helper: render as HTML if string contains tags, otherwise plain text
+const RichText = ({ content, className }) => {
+  if (!content) return null;
+  const hasHtml = /<[a-z][\s\S]*>/i.test(content);
+  if (hasHtml) {
+    return (
+      <div
+        className={className}
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }
+  return <p className={className}>{content}</p>;
+};
+
+export const WorkDetailClient = ({ item, caseStudy }) => {
   const router = useRouter();
+  const sections = caseStudy.sections || [];
+  const credits = Array.isArray(caseStudy.credits) ? caseStudy.credits : [];
+  const frameworks = item.frameworks || [];
+
+  // Determine what goes where
+  const sidebarDescription = item.description; // short blurb for sidebar
+  const mainDescription = item.showcaseDescription || caseStudy.description; // long text for right side
 
   return (
     <>
-      {/* Back + Project Hero */}
-      <section className="pt-32 pb-20 px-6 md:px-12 w-full max-w-7xl mx-auto">
-        <button
-          onClick={() => router.push("/#portfolio")}
-          className="flex items-center gap-2 text-cream-muted hover:text-cream transition-colors mb-12 group cursor-pointer"
-        >
-          <ArrowLeft
-            size={16}
-            className="group-hover:-translate-x-1 transition-transform"
-          />
-          <span className="text-sm uppercase tracking-[0.15em]">Back to Portfolio</span>
-        </button>
-
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
-              {item.category}
-            </p>
-            <Heading level={1} className="leading-[0.85]">
-              {item.title}
-            </Heading>
-          </div>
-          {item.url && (
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-cream-border text-cream px-6 py-3 rounded-full hover:bg-cream-card transition-colors text-sm w-fit"
-            >
-              Visit Website <ExternalLink size={14} />
-            </a>
-          )}
+      {/* ══════════════════════════════════════════════════════════════
+          SECTION 1: SHOWCASE MARQUEE
+          ══════════════════════════════════════════════════════════════ */}
+      <section className="min-h-screen bg-bg-dark relative overflow-hidden flex flex-col">
+        <div className="absolute top-28 left-6 md:left-12 z-20">
+          <button
+            onClick={() => router.push("/work")}
+            className="flex items-center gap-2 text-cream-muted hover:text-cream transition-colors group cursor-pointer"
+          >
+            <ArrowLeft
+              size={16}
+              className="group-hover:-translate-x-1 transition-transform"
+            />
+            <span className="text-sm uppercase tracking-[0.15em]">
+              Back to Work
+            </span>
+          </button>
         </div>
-      </section>
 
-      {/* Section C: Showcase Marquee + Laptop */}
-      <section className="min-h-screen bg-bg-dark relative overflow-hidden flex items-center justify-center py-20">
         <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 z-0 pointer-events-none">
           <div className="animate-marquee">
             <div className="flex shrink-0">
@@ -53,7 +57,7 @@ export const WorkDetailClient = ({ item }) => {
                   key={`1-${i}`}
                   className="text-[20vw] font-semibold text-cream-subtle px-8"
                 >
-                  {item.marqueeText || "website.com"}
+                  {item.marqueeText || "project"}
                 </span>
               ))}
             </div>
@@ -63,107 +67,237 @@ export const WorkDetailClient = ({ item }) => {
                   key={`2-${i}`}
                   className="text-[20vw] font-semibold text-cream-subtle px-8"
                 >
-                  {item.marqueeText || "website.com"}
+                  {item.marqueeText || "project"}
                 </span>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="relative w-full max-w-7xl mx-auto px-6 h-full flex items-center justify-center z-10">
-          <div className="absolute top-0 left-6 md:left-12 max-w-xs">
-            <Text className="text-sm text-cream-muted">
-              {item.showcaseDescription}
-            </Text>
-          </div>
-
-          <div className="relative">
+        <div className="relative flex-1 flex items-center justify-center z-10 px-6">
+          <div className="relative w-full max-w-4xl">
             <img
-              src="/images/laptop.png"
+              src={item.image || "/images/placeholder.png"}
               alt={item.title}
               className="w-full h-auto object-contain mx-auto max-w-[90%]"
-              style={{ maxHeight: "485px" }}
+              style={{ maxHeight: "500px" }}
             />
-          </div>
-
-          <div className="absolute bottom-0 right-6 md:right-12 max-w-xs text-right">
-            <Text className="text-sm text-cream-muted">{item.description}</Text>
           </div>
         </div>
       </section>
 
-      {/* Section D: Framework + Mobile Mockup */}
-      <section className="py-32 overflow-hidden bg-bg-dark-alt">
-        <div className="w-full max-w-7xl mx-auto px-6 md:px-12">
-          <div className="grid md:grid-cols-2 gap-20 items-center">
-            {/* Mobile Mockup */}
-            <div className="order-2 md:order-1 relative">
-              <div className="relative w-64 md:w-80 mx-auto transform -rotate-12 hover:rotate-0 transition-transform duration-700 ease-out z-10">
-                <div className="absolute inset-0 bg-black rounded-[3rem] shadow-2xl -m-2"></div>
-                <div className="relative bg-black rounded-[2.5rem] border-8 border-gray-800 overflow-hidden shadow-xl aspect-[9/19]">
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 h-6 w-32 bg-black rounded-b-xl z-20"></div>
-                  <div className="h-full w-full bg-bg-dark overflow-y-auto no-scrollbar">
-                    <img
-                      src={item.image}
-                      alt="Mobile View"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <div className="text-cream text-center p-4">
-                        <h4 className="font-display italic text-xl">{item.title}</h4>
-                        <p className="text-xs mt-2 text-cream-muted">{item.subtitle}</p>
-                      </div>
-                    </div>
+      {/* ══════════════════════════════════════════════════════════════
+          SECTION 2: TWO-COLUMN
+          ══════════════════════════════════════════════════════════════ */}
+      <article className="bg-bg-dark text-cream border-t border-cream-border">
+        <div className="grid grid-cols-1 lg:grid-cols-[38%_62%] min-h-screen relative w-full max-w-7xl mx-auto">
+          {/* ───── LEFT SIDEBAR ───── */}
+          <aside
+            className="
+              lg:sticky lg:top-0 lg:h-screen
+              px-6 md:px-12
+              lg:border-r lg:border-cream-border
+              flex flex-col justify-between
+            "
+          >
+            <div className="flex flex-col gap-5 pt-12 lg:pt-20">
+              {/* Category + Year */}
+              <div className="flex items-center gap-3">
+                <span className="text-xs uppercase tracking-[0.15em] text-primary font-medium">
+                  {item.dbCategory === "web-development"
+                    ? "Web Development"
+                    : item.dbCategory === "uiux"
+                      ? "UI/UX Design"
+                      : item.dbCategory === "graphic-design"
+                        ? "Graphic Design"
+                        : item.category}
+                </span>
+                {item.year && (
+                  <>
+                    <span className="text-cream-muted/30">·</span>
+                    <span className="text-xs text-cream-muted/60">
+                      {item.year}
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Title */}
+              <h1 className="font-display text-[clamp(2.25rem,4.5vw,4rem)] leading-[0.9] tracking-[-0.02em] text-cream">
+                {item.title}
+              </h1>
+
+              {/* Subtitle */}
+              {item.subtitle && (
+                <p className="text-cream-muted text-base md:text-lg -mt-1">
+                  {item.subtitle}
+                </p>
+              )}
+
+              {/* Description (short) */}
+              {sidebarDescription && (
+                <RichText
+                  content={sidebarDescription}
+                  className="text-cream-muted/70 text-sm leading-[1.6]"
+                />
+              )}
+
+              {/* Tech Stack Pills */}
+              {frameworks.length > 0 && (
+                <div>
+                  <p className="text-xs uppercase tracking-[0.15em] text-cream-muted/40 mb-3">
+                    Tech Stack
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {frameworks.map((fw) => (
+                      <span
+                        key={fw.name}
+                        className="px-3 py-1.5 rounded-full border border-cream-border text-cream-muted text-xs hover:border-cream-muted/30 hover:bg-cream-card transition-all"
+                      >
+                        {fw.name}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              </div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/5 rounded-full blur-3xl -z-10"></div>
-            </div>
+              )}
 
-            {/* Tech Stack */}
-            <div className="order-1 md:order-2">
-              <p className="text-xs uppercase tracking-[0.2em] text-primary mb-3">
-                Tech Stack
-              </p>
-              <Heading level={2} className="mb-8">
-                Framework
-              </Heading>
-
-              <div className="flex flex-wrap gap-4 mb-12">
-                {(item.frameworks || []).map((fw, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-4 rounded-xl bg-bg-dark-card border border-cream-border hover:border-cream-muted/20 transition-all"
-                  >
-                    <div
-                      className={`w-10 h-10 ${fw.color} rounded-full flex items-center justify-center text-white font-bold text-sm`}
-                    >
-                      {fw.icon}
-                    </div>
-                    <span className="font-medium text-cream">{fw.name}</span>
+              {/* Services */}
+              {item.services && item.services.length > 0 && (
+                <div className="border-t border-cream-border/50 pt-5">
+                  <p className="text-xs uppercase tracking-[0.15em] text-cream-muted/40 mb-3">
+                    Services
+                  </p>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+                    {item.services.map((service, i) => (
+                      <span key={i} className="text-sm text-cream/70">
+                        {service}
+                      </span>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
 
-              <div className="space-y-4">
-                <Heading level={4}>{item.title}</Heading>
-                <Text>{item.showcaseDescription}</Text>
-
-                {item.url && (
+              {/* Visit Website */}
+              {item.url && item.url !== "#" && (
+                <div>
                   <a
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block mt-4 rounded-full bg-primary px-8 py-3.5 font-medium text-bg-dark transition-colors hover:bg-primary-hover"
+                    className="inline-flex items-center gap-2 border border-cream-border text-cream px-6 py-3 rounded-full hover:bg-cream-card hover:border-cream-muted/30 transition-colors text-sm w-fit"
                   >
-                    Go to the website
+                    Visit Website <ExternalLink size={14} />
                   </a>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+
+            {/* Credits */}
+            {credits.length > 0 && (
+              <div className="border-t border-cream-border/50 pt-5 pb-8 lg:pb-12 mt-6">
+                <p className="text-xs uppercase tracking-[0.15em] text-cream-muted/40 mb-3">
+                  Credits
+                </p>
+                <div className="flex flex-col gap-2">
+                  {credits.map((credit, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-baseline gap-4"
+                    >
+                      <span className="text-sm text-cream/80 font-medium">
+                        {credit.name}
+                      </span>
+                      <span className="text-xs text-cream-muted/50 italic text-right">
+                        {credit.role}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </aside>
+
+          {/* ───── RIGHT CONTENT ───── */}
+          <div className="px-6 md:px-12 pt-12 lg:pt-20 pb-10">
+            {/* Showcase description (long) */}
+            {mainDescription && (
+              <div className="mb-16 lg:mb-20 max-w-2xl">
+                <RichText
+                  content={mainDescription}
+                  className="text-cream-muted/80 text-base md:text-lg leading-[1.8] [&>p]:mb-4 last:[&>p]:mb-0"
+                />
+              </div>
+            )}
+
+            {/* Case study sections */}
+            {sections.map((section, sectionIdx) => (
+              <section
+                key={section.id}
+                id={`cs-${section.id}`}
+                data-cs-section={section.id}
+                className={`${sectionIdx < sections.length - 1 ? "mb-[15vh]" : "mb-[5vh]"} min-h-[50vh]`}
+              >
+                <div className="mb-8">
+                  <p className="text-xs uppercase tracking-[0.15em] text-primary/70 mb-3">
+                    {String(sectionIdx + 1).padStart(2, "0")}
+                  </p>
+                  <h3 className="font-display text-2xl md:text-3xl text-cream mb-4">
+                    {section.title}
+                  </h3>
+                  {section.description && (
+                    <RichText
+                      content={section.description}
+                      className="text-cream-muted/80 text-[0.9rem] md:text-base leading-[1.7] max-w-2xl [&>p]:mb-4 last:[&>p]:mb-0"
+                    />
+                  )}
+                </div>
+
+                {section.images && section.images.length > 0 && (
+                  <div className="flex flex-col gap-4">
+                    {section.images.map((img, imgIdx) => (
+                      <div
+                        key={imgIdx}
+                        className="w-full rounded-lg overflow-hidden bg-bg-dark-card"
+                      >
+                        <Image
+                          src={img}
+                          alt={`${section.title} — image ${imgIdx + 1}`}
+                          width={1200}
+                          height={800}
+                          className="w-full h-auto block"
+                          sizes="(max-width: 768px) 100vw, 60vw"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {(!section.images || section.images.length === 0) &&
+                  section.description && (
+                    <div className="border-l-2 border-primary/20 pl-6 py-2">
+                      <p className="text-cream-muted/60 text-sm italic">
+                        Project images coming soon
+                      </p>
+                    </div>
+                  )}
+              </section>
+            ))}
+
+            {/* Fallback: no sections and no showcase description */}
+            {sections.length === 0 && !mainDescription && (
+              <div className="min-h-[50vh] flex items-center">
+                <RichText
+                  content={item.description}
+                  className="text-cream-muted/80 text-base leading-[1.7] max-w-2xl [&>p]:mb-4 last:[&>p]:mb-0"
+                />
+              </div>
+            )}
+
+            <div className="h-[10vh]" />
           </div>
         </div>
-      </section>
+      </article>
     </>
   );
 };

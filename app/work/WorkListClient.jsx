@@ -11,12 +11,12 @@ const ALL = "All";
 // Row 0: tall, medium, short  (staircase ↘)
 // Row 1: short, medium, tall  (staircase ↗)
 const ASPECT_PATTERN = [
-  "aspect-[9/10]",   // tall   ~497px
-  "aspect-[19/18]",  // medium ~421px
-  "aspect-[4/3]",    // short  ~333px
-  "aspect-[4/3]",    // short
-  "aspect-[19/18]",  // medium
-  "aspect-[9/10]",   // tall
+  "aspect-[9/10]", // tall   ~497px
+  "aspect-[19/18]", // medium ~421px
+  "aspect-[4/3]", // short  ~333px
+  "aspect-[4/3]", // short
+  "aspect-[19/18]", // medium
+  "aspect-[9/10]", // tall
 ];
 
 export const WorkListClient = ({ items }) => {
@@ -24,11 +24,18 @@ export const WorkListClient = ({ items }) => {
   const [selected, setSelected] = useState(ALL);
   const [filterOpen, setFilterOpen] = useState(false);
 
+  const CATEGORY_MAP = {
+    "web-development": "Website",
+    "graphic-design": "Graphic Design",
+    "uiux": "UI/UX",
+  };
+
   const filterOptions = useMemo(() => {
     const cats = new Set();
     items.forEach((item) => {
-      cats.add(item.platform === "react" ? "React" : "WordPress");
-      cats.add(item.category);
+      if (item.dbCategory && CATEGORY_MAP[item.dbCategory]) {
+        cats.add(CATEGORY_MAP[item.dbCategory]);
+      }
     });
     return [ALL, ...Array.from(cats).sort()];
   }, [items]);
@@ -37,67 +44,63 @@ export const WorkListClient = ({ items }) => {
     if (selected === ALL) return items;
     return items.filter(
       (item) =>
-        item.category === selected ||
-        (selected === "React" && item.platform === "react") ||
-        (selected === "WordPress" && item.platform === "wordpress")
+        item.dbCategory && CATEGORY_MAP[item.dbCategory] === selected,
     );
   }, [items, selected]);
 
   return (
     <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 pt-32 pb-24">
-      {/* Hero + Filter Row */}
-      <div className="flex items-end justify-between mb-20 gap-8 flex-wrap">
-        {/* Filter */}
-        <div className="relative">
-          <button
-            onClick={() => setFilterOpen(!filterOpen)}
-            className="flex items-center gap-2 text-primary text-sm uppercase tracking-[0.15em] hover:text-primary-hover transition-colors cursor-pointer"
-          >
-            <ChevronDown
-              size={14}
-              className={`transition-transform duration-200 ${filterOpen ? "rotate-180" : ""}`}
-            />
-            {selected === ALL ? "Industry: All" : selected}
-          </button>
-
-          <AnimatePresence>
-            {filterOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-8 left-0 z-30 bg-bg-dark-alt border border-cream-border rounded-xl py-2 min-w-[180px] shadow-xl"
-              >
-                {filterOptions.map((opt) => (
-                  <button
-                    key={opt}
-                    onClick={() => {
-                      setSelected(opt);
-                      setFilterOpen(false);
-                    }}
-                    className={`w-full text-left px-5 py-2.5 text-sm transition-colors cursor-pointer ${
-                      selected === opt
-                        ? "text-primary"
-                        : "text-cream-muted hover:text-cream"
-                    }`}
-                  >
-                    {opt}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
+      {/* Hero + Filter Stack */}
+      <div className="flex flex-col items-center mb-16 gap-12">
         {/* Heading */}
-        <h1 className="font-display text-[clamp(60px,10vw,140px)] leading-[0.85] tracking-[-0.03em] text-cream">
-          <em className="not-italic font-display italic text-cream">My</em>{" "}
-          Work
+        <h1 className="font-display text-[clamp(60px,10vw,140px)] leading-[0.85] tracking-[-0.03em] text-cream text-center w-full">
+          <em className="not-italic font-display italic text-cream">My</em> Work
         </h1>
 
-        {/* Spacer to balance layout */}
-        <div className="hidden md:block w-[140px]" />
+        {/* Filter - aligned left relative to the container but its own block */}
+        <div className="w-full flex justify-start md:justify-center">
+          <div className="relative z-30">
+            <button
+              onClick={() => setFilterOpen(!filterOpen)}
+              className="flex items-center gap-2 text-primary text-sm uppercase tracking-[0.15em] hover:text-primary-hover transition-colors cursor-pointer"
+            >
+              <ChevronDown
+                size={14}
+                className={`transition-transform duration-200 ${filterOpen ? "rotate-180" : ""}`}
+              />
+              {selected === ALL ? "Category: All" : selected}
+            </button>
+
+            <AnimatePresence>
+              {filterOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute top-8 left-0 md:left-1/2 md:-translate-x-1/2 z-30 bg-bg-dark-alt border border-cream-border rounded-xl py-2 min-w-45 shadow-xl"
+                >
+                  {filterOptions.map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => {
+                        setSelected(opt);
+                        setFilterOpen(false);
+                      }}
+                      className={`w-full text-left md:text-center px-5 py-2.5 text-sm transition-colors cursor-pointer ${
+                        selected === opt
+                          ? "text-primary"
+                          : "text-cream-muted hover:text-cream"
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
 
       {/* Flat 3-Column Grid — staircase pattern from varying image heights */}
@@ -132,9 +135,9 @@ const WorkCard = ({ item, onClick, aspectClass }) => (
   >
     {/* Image — no border-radius, varying aspect ratio per position */}
     <div className={`relative ${aspectClass} overflow-hidden`}>
-      {item.image ? (
+      {(item.thumbnail || item.image) ? (
         <Image
-          src={item.image}
+          src={item.thumbnail || item.image}
           alt={item.title}
           fill
           className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
@@ -146,12 +149,15 @@ const WorkCard = ({ item, onClick, aspectClass }) => (
 
     {/* Text — sans-serif ~18px title, ~12px tags */}
     <div className="mt-4">
-      <h3 className="text-lg font-normal text-cream">
-        {item.title}
-      </h3>
+      <h3 className="text-lg font-normal text-cream">{item.title}</h3>
       <p className="text-xs text-cream/50 mt-1">
-        {[item.platform === "react" ? "React" : "WordPress", item.category]
+        {[
+          item.dbCategory === "web-development" ? "Website" : item.dbCategory === "graphic-design" ? "Graphic Design" : item.dbCategory === "uiux" ? "UI/UX" : null,
+          item.platform === "react" ? "React" : item.platform === "wordpress" ? "WordPress" : null,
+          item.category
+        ]
           .filter(Boolean)
+          .filter((v, i, a) => a.indexOf(v) === i)
           .join(", ")}
       </p>
     </div>

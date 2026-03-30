@@ -3,9 +3,9 @@
 /* Griflan-inspired dark-only color palette */
 @theme {
   --color-primary: #957bac;
-  --color-primary-hover: #BFAFD0;
-  --color-primary-dark: #765C8C;
-  --color-cream: #FFFDD8;
+  --color-primary-hover: #bfafd0;
+  --color-primary-dark: #765c8c;
+  --color-cream: #fffdd8;
   --color-cream-muted: rgba(255, 253, 219, 0.5);
   --color-cream-subtle: rgba(255, 253, 219, 0.08);
   --color-cream-border: rgba(255, 253, 219, 0.1);
@@ -13,6 +13,7 @@
   --color-bg-dark: #181616;
   --color-bg-dark-alt: #1c1a1a;
   --color-bg-dark-card: #201e1e;
+  --color-accent-red: #fa3c28; /* Griflan red */
 }
 
 @keyframes marquee {
@@ -34,13 +35,13 @@
 html {
   scroll-behavior: smooth;
   background-color: #181616;
-  color: #FFFDD8;
+  color: #fffdd8;
 }
 
 body {
   font-family: "Plus Jakarta Sans", system-ui, sans-serif;
   background-color: #181616;
-  color: #FFFDD8;
+  color: #fffdd8;
 }
 
 /* Heading font */
@@ -63,7 +64,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #BFAFD0;
+  background: #bfafd0;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 /* Selection */

@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id                  String           @id @default(cuid())
+  title               String
+  slug                String           @unique
+  subtitle            String?
+  description         String?
+  showcaseDescription String?
+  category            String           // "web-development" | "graphic-design" | "uiux"
+  platform            String?          // "react" | "wordpress" | null
+  type                String?          // "desktop" | "mobile" | null
+  year                String?
+  services            String[]
+  frameworks          String?          // JSON string: [{name, icon, color}]
+  thumbnail           String?
+  image               String?
+  marqueeText         String?
+  url                 String?
+  featured            Boolean          @default(false)
+  published           Boolean          @default(true)
+  order               Int              @default(0)
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+  sections            ProjectSection[]
+  credits             ProjectCredit[]
+}
+
+model ProjectSection {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  images      String[]
+  order       Int      @default(0)
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model ProjectCredit {
+  id        String  @id @default(cuid())
+  name      String
+  role      String
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Testimonial {
+  id         String   @id @default(cuid())
+  author     String
+  role       String?
+  company    String?
+  content    String
+  avatar     String?
+  published  Boolean  @default(true)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  name      String
+  logo      String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

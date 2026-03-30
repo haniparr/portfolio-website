@@ -45,7 +45,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h1 className="font-display text-[clamp(48px,8vw,120px)] font-normal text-cream leading-[0.9] tracking-[-0.02em]">
+            <h1 className="font-display text-[clamp(48px,8vw,120px)] font-normal text-cream leading-none tracking-[-0.02em]">
               Crafting
             </h1>
           </motion.div>
@@ -54,7 +54,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
           >
-            <h1 className="font-display text-[clamp(48px,8vw,120px)] font-normal leading-[0.9] tracking-[-0.02em]">
+            <h1 className="font-display text-[clamp(48px,8vw,120px)] font-normal leading-none tracking-[-0.02em]">
               <span className="text-cream">Digital </span>
               <span className="italic text-primary">Experiences</span>
             </h1>
@@ -64,7 +64,7 @@ export const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <h1 className="font-display text-[clamp(48px,8vw,120px)] font-normal text-cream leading-[0.9] tracking-[-0.02em]">
+            <h1 className="font-display text-[clamp(48px,8vw,120px)] font-normal text-cream leading-none tracking-[-0.02em]">
               &amp; Visual Stories.
             </h1>
           </motion.div>

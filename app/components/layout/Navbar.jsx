@@ -5,11 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const menuItems = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Work", href: "/work" },
-  { label: "Services", href: "#services" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const containerVariants = {
@@ -186,7 +185,7 @@ export const Navbar = () => {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ delay: 0.5 }}
               >
-                <p>&copy; 2024 Vidi Catering</p>
+                <p>&copy; {new Date().getFullYear()} haniparr</p>
               </motion.div>
             </motion.div>
           </div>

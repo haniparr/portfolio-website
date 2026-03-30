@@ -1,55 +1,31 @@
 "use client";
 import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Heading, Text } from "@/app/components/ui/Typography";
 import { ThreeDMarquee } from "@/app/components/ui/3d-marquee";
 import { TextReveal } from "@/app/components/ui/TextReveal";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 
-const marqueeImages = [
-  "https://assets.aceternity.com/cloudinary_bkp/3d-card.png",
-  "https://assets.aceternity.com/animated-modal.png",
-  "https://assets.aceternity.com/animated-testimonials.webp",
-  "https://assets.aceternity.com/cloudinary_bkp/Tooltip_luwy44.png",
-  "https://assets.aceternity.com/github-globe.png",
-  "https://assets.aceternity.com/glare-card.png",
-  "https://assets.aceternity.com/layout-grid.png",
-  "https://assets.aceternity.com/flip-text.png",
-  "https://assets.aceternity.com/hero-highlight.png",
-  "https://assets.aceternity.com/carousel.webp",
-  "https://assets.aceternity.com/placeholders-and-vanish-input.png",
-  "https://assets.aceternity.com/shooting-stars-and-stars-background.png",
-  "https://assets.aceternity.com/signup-form.png",
-  "https://assets.aceternity.com/cloudinary_bkp/stars_sxle3d.png",
-  "https://assets.aceternity.com/spotlight-new.webp",
-  "https://assets.aceternity.com/cloudinary_bkp/Spotlight_ar5jpr.png",
-  "https://assets.aceternity.com/cloudinary_bkp/Parallax_Scroll_pzlatw_anfkh7.png",
-  "https://assets.aceternity.com/tabs.png",
-  "https://assets.aceternity.com/cloudinary_bkp/Tracing_Beam_npujte.png",
-  "https://assets.aceternity.com/cloudinary_bkp/typewriter-effect.png",
-  "https://assets.aceternity.com/glowing-effect.webp",
-  "https://assets.aceternity.com/hover-border-gradient.png",
-  "https://assets.aceternity.com/cloudinary_bkp/Infinite_Moving_Cards_evhzur.png",
-  "https://assets.aceternity.com/cloudinary_bkp/Lamp_hlq3ln.png",
-  "https://assets.aceternity.com/macbook-scroll.png",
-  "https://assets.aceternity.com/cloudinary_bkp/Meteors_fye3ys.png",
-  "https://assets.aceternity.com/cloudinary_bkp/Moving_Border_yn78lv.png",
-  "https://assets.aceternity.com/multi-step-loader.png",
-  "https://assets.aceternity.com/vortex.png",
-  "https://assets.aceternity.com/wobble-card.png",
-  "https://assets.aceternity.com/world-map.webp",
-];
+// Primary filter tabs
+const PRIMARY_FILTERS = ["all", "react", "wordpress", "uiux"];
 
-export const WebDevSection = ({ portfolioItems = [] }) => {
+export const WebDevSection = ({
+  portfolioItems = [],
+  uiuxItems = [],
+  marqueeImages = [],
+}) => {
   const router = useRouter();
-  const [selectedPlatform, setSelectedPlatform] = useState("react");
+  const [selectedPlatform, setSelectedPlatform] = useState("all");
   const [selectedType, setSelectedType] = useState("desktop");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
 
-  const filteredItems = useMemo(() => {
+  // Items for web dev platforms (react / wordpress)
+  const filteredWebItems = useMemo(() => {
+    if (selectedPlatform === "uiux" || selectedPlatform === "all") return [];
     let items = portfolioItems.filter(
-      (item) => item.platform === selectedPlatform
+      (item) => item.platform === selectedPlatform,
     );
     if (selectedPlatform === "wordpress") {
       items = items.filter((item) => item.type === selectedType);
@@ -57,22 +33,48 @@ export const WebDevSection = ({ portfolioItems = [] }) => {
     return items;
   }, [portfolioItems, selectedPlatform, selectedType]);
 
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredItems.slice(startIndex, startIndex + itemsPerPage);
+  // Items for UI/UX
+  const filteredUiuxItems = useMemo(() => {
+    if (selectedPlatform !== "uiux") return [];
+    return uiuxItems;
+  }, [selectedPlatform, uiuxItems]);
+
+  const currentItems = useMemo(() => {
+    let activeItems = [];
+    if (selectedPlatform === "all") {
+      activeItems = [...portfolioItems, ...uiuxItems];
+    } else if (selectedPlatform === "uiux") {
+      activeItems = filteredUiuxItems;
+    } else {
+      activeItems = filteredWebItems;
+    }
+
+    return activeItems
+      .sort((a, b) => (a.order || 0) - (b.order || 0))
+      .slice(0, 6);
+  }, [selectedPlatform, filteredUiuxItems, filteredWebItems, portfolioItems, uiuxItems]);
 
   const handleCardClick = (item) => {
-    router.push(`/work/${item.slug}`);
+    if (item.caseStudyUrl) {
+      window.open(item.caseStudyUrl, "_blank");
+    } else if (item.slug) {
+      router.push(`/work/${item.slug}`);
+    }
   };
 
   const handlePlatformChange = (platform) => {
     setSelectedPlatform(platform);
-    setCurrentPage(1);
   };
 
   const handleTypeChange = (type) => {
     setSelectedType(type);
-    setCurrentPage(1);
+  };
+
+  const labelMap = {
+    all: "All",
+    react: "React / Next.js",
+    wordpress: "WordPress",
+    uiux: "UI/UX Design",
   };
 
   return (
@@ -86,22 +88,32 @@ export const WebDevSection = ({ portfolioItems = [] }) => {
           <div className="absolute inset-0 z-5 bg-gradient-to-b from-bg-dark/80 via-transparent to-bg-dark/80 pointer-events-none" />
           <div className="relative z-10 h-full w-full max-w-7xl mx-auto px-6 md:px-12 flex items-center">
             <div className="max-w-4xl flex flex-col justify-center h-full">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-6xl text-primary/50 font-bold">h</span>
-              </div>
               <div className="flex flex-col">
                 <Heading
                   level={1}
-                  className="text-start text-[15vw] md:text-[140px] leading-[0.6] tracking-tighter"
+                  className="text-start text-[15vw] md:text-[140px] leading-none tracking-tighter"
                 >
                   web
                 </Heading>
                 <Heading
                   level={1}
-                  className="text-start text-[15vw] md:text-[140px] leading-[0.6] -mt-[2vw] md:-mt-6 tracking-tighter"
+                  className="text-start text-[15vw] md:text-[140px] leading-none -mt-[2vw] md:-mt-6 tracking-tighter"
                 >
                   development.
                 </Heading>
+              </div>
+              <div className="flex items-center gap-2 mt-10">
+                <TextReveal
+                  as="h3"
+                  className="font-plusJakarta text-[clamp(16px,4vw,20px)] font-normal text-cream leading-[1.19] tracking-[-0.02em]"
+                >
+                  It's not enough to just write clean code or build fast
+                  websites. The real work is understanding the nuance. The
+                  empathy behind every click, scroll, and interaction. From
+                  local startups in Indonesia to global tech brands, I help
+                  businesses stop building websites that talk at users and start
+                  creating digital experiences that speak with them.
+                </TextReveal>
               </div>
             </div>
           </div>
@@ -111,44 +123,24 @@ export const WebDevSection = ({ portfolioItems = [] }) => {
       {/* ===== SUB-SECTION B: Portfolio List ===== */}
       <section className="bg-bg-dark py-20 relative z-40">
         <div className="w-full max-w-7xl mx-auto px-6 md:px-12">
-          <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
-            <TextReveal
-              as="h2"
-              className="font-display text-[clamp(36px,6vw,80px)] font-normal text-cream leading-[0.9] tracking-[-0.02em]"
-            >
-              portfolio
-            </TextReveal>
-            <Text className="max-w-xs">
-              Kumpulan website yang telah kami bangun menggunakan berbagai
-              teknologi modern.
-            </Text>
-          </div>
-
           {/* Primary Filter */}
-          <div className="flex justify-center gap-4 mb-6">
-            <button
-              className={`px-6 py-2 rounded-full transition-colors cursor-pointer ${
-                selectedPlatform === "react"
-                  ? "bg-primary text-bg-dark"
-                  : "border border-cream-border text-cream hover:bg-cream-card"
-              }`}
-              onClick={() => handlePlatformChange("react")}
-            >
-              React
-            </button>
-            <button
-              className={`px-6 py-2 rounded-full transition-colors cursor-pointer ${
-                selectedPlatform === "wordpress"
-                  ? "bg-primary text-bg-dark"
-                  : "border border-cream-border text-cream hover:bg-cream-card"
-              }`}
-              onClick={() => handlePlatformChange("wordpress")}
-            >
-              WordPress
-            </button>
+          <div className="flex flex-wrap justify-start gap-3 mb-6">
+            {PRIMARY_FILTERS.map((platform) => (
+              <button
+                key={platform}
+                className={`px-6 py-2 rounded-full transition-colors cursor-pointer ${
+                  selectedPlatform === platform
+                    ? "bg-primary text-bg-dark"
+                    : "border border-cream-border text-cream hover:bg-cream-card"
+                }`}
+                onClick={() => handlePlatformChange(platform)}
+              >
+                {labelMap[platform]}
+              </button>
+            ))}
           </div>
 
-          {/* Sub Filter */}
+          {/* Sub Filter (WordPress only) */}
           {selectedPlatform === "wordpress" && (
             <div className="flex justify-center gap-3 mb-12">
               <button
@@ -177,55 +169,76 @@ export const WebDevSection = ({ portfolioItems = [] }) => {
           {selectedPlatform !== "wordpress" && <div className="mb-12" />}
 
           {/* Portfolio Grid */}
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {currentItems.map((item) => (
-              <div
-                key={item.id}
-                className="group cursor-pointer rounded-lg overflow-hidden border border-cream-border hover:border-primary/50 transition-all duration-300"
-                onClick={() => handleCardClick(item)}
-              >
-                <div className="aspect-video relative overflow-hidden">
-                  {item.image && (
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover group-hover:scale-105 group-hover:brightness-110 transition-all duration-500"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                </div>
-                <div className="p-5 bg-bg-dark-card">
-                  <p className="text-xs uppercase tracking-[0.15em] text-primary mb-2">
-                    {item.category}
-                  </p>
-                  <h4 className="font-display text-xl text-cream mb-1 group-hover:-translate-y-0.5 transition-transform">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm text-cream-muted">{item.subtitle}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-                <button
-                  key={num}
-                  onClick={() => setCurrentPage(num)}
-                  className={`w-8 h-8 rounded-full transition-colors cursor-pointer ${
-                    num === currentPage
-                      ? "bg-primary text-bg-dark"
-                      : "border border-cream-border text-cream-muted hover:bg-primary hover:text-bg-dark"
-                  }`}
+          <AnimatePresence mode="popLayout">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {currentItems.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.45, delay: i * 0.08 }}
+                  className="group cursor-pointer bg-bg-dark-card rounded-lg overflow-hidden border border-cream-border hover:border-cream-muted/20 hover:bg-cream-card transition-all duration-300 flex flex-col aspect-4/5"
+                  onClick={() => handleCardClick(item)}
                 >
-                  {num}
-                </button>
+                  <div className="relative overflow-hidden bg-bg-dark-alt h-[55%] shrink-0">
+                    {(item.thumbnail || item.image) && (
+                      <Image
+                        src={item.thumbnail || item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    )}
+                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-bg-dark/60 backdrop-blur-sm border border-cream-border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ArrowUpRight size={18} className="text-cream" />
+                    </div>
+                  </div>
+                  <div className="p-5 flex-1 flex flex-col">
+                    <p className="text-xs uppercase tracking-[0.15em] text-primary mb-2">
+                      {item.category}
+                    </p>
+                    <h4 className="font-display text-xl text-cream mb-1 group-hover:-translate-y-0.5 transition-transform">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm text-cream-muted line-clamp-2">
+                      {item.excerpt}
+                    </p>
+                    {/* Tools / Frameworks pills */}
+                    {(item.tools || item.frameworks) && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {(item.tools || item.frameworks.map((f) => f.name)).map(
+                          (tag) => (
+                            <span
+                              key={tag}
+                              className="px-3 py-1 rounded-full text-xs border border-cream-border text-cream-muted/60"
+                            >
+                              {tag}
+                            </span>
+                          ),
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
               ))}
             </div>
-          )}
+          </AnimatePresence>
+
+          {/* See All Work */}
+          <div className="flex justify-center">
+            <Link
+              href="/work"
+              className="inline-flex items-center gap-2 rounded-full border border-cream-border px-8 py-4 font-medium text-cream transition-colors hover:bg-cream-card hover:border-cream-muted/30 group"
+            >
+              <span>See All Work</span>
+              <ArrowUpRight
+                size={18}
+                className="text-cream-muted group-hover:text-cream group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+              />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

@@ -24,31 +24,31 @@ export const UIUXSection = () => {
   return (
     <section id="uiux" className="bg-bg-dark py-24 md:py-32">
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12">
-        {/* Section Header */}
-        <div className="mb-16">
+        {/* Section Header + Filter */}
+        <div className="flex flex-col md:flex-row justify-between items-start mb-12 gap-6">
           <TextReveal
             as="h2"
-            className="font-display text-[clamp(48px,8vw,120px)] font-normal text-cream leading-[0.9] tracking-[-0.02em]"
+            className="font-display text-[clamp(36px,6vw,80px)] font-normal text-cream leading-[0.9] tracking-[-0.02em]"
           >
-            ui/ux design.
+            ui/ux design
           </TextReveal>
-        </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-3 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveFilter(category)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
-                activeFilter === category
-                  ? "bg-primary text-bg-dark"
-                  : "border border-cream-border text-cream-muted hover:border-cream-muted/30 hover:text-cream"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
+          {/* Filter Tabs */}
+          <div className="flex flex-wrap gap-3 md:mt-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setActiveFilter(category)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 cursor-pointer ${
+                  activeFilter === category
+                    ? "bg-primary text-bg-dark"
+                    : "border border-cream-border text-cream-muted hover:border-cream-muted/30 hover:text-cream"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Portfolio Grid */}
@@ -62,7 +62,9 @@ export const UIUXSection = () => {
                 rel="noopener noreferrer"
                 layout
                 initial={{ opacity: 0, y: 40 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                animate={
+                  isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }
+                }
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{
                   duration: 0.5,
