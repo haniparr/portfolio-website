@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const menuItems = [
   { label: "Home", href: "/" },
@@ -88,10 +90,21 @@ export const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center relative">
         {/* Logo */}
         <motion.div
-          className="w-10 h-10 bg-primary rounded-lg pointer-events-auto"
-          whileHover={{ scale: 1.1 }}
+          className="pointer-events-auto"
+          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-        />
+        >
+          <Link href="/">
+            <Image
+              src="/images/logo-hanif.webp"
+              alt="Logo Hanif"
+              width={48}
+              height={48}
+              className="w-12 h-12 object-contain"
+              priority
+            />
+          </Link>
+        </motion.div>
 
         {/* Toggle Button */}
         <motion.button
